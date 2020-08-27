@@ -1,0 +1,51 @@
+<h1 id="grok">Grok</h1>
+<p><a href="https://travis-ci.org/thekrakken/java-grok"><img src="https://secure.travis-ci.org/thekrakken/java-grok.png?branch=master" alt="Build Status" /></a></p>
+<p>Java Grokky is simple API that allows you to easily parse logs and other files (single line). With Java Grok, you can turn unstructured log and event data into structured data (JSON).</p>
+<hr />
+<h3 id="what-can-i-use-grok-for">What can I use Grok for?</h3>
+<ul>
+<li>reporting errors and other patterns from logs and processes</li>
+<li>parsing complex text output and converting it to json for external processing</li>
+<li>apply ‘write-once use-everywhere’ to regular expressions</li>
+<li>automatically providing patterns for unknown text inputs (logs you want patterns generated for future matching)</li>
+</ul>
+<h3 id="maven-repository">Maven repository</h3>
+<pre class="maven"><code>&lt;dependency&gt;
+  &lt;groupId&gt;io.krakens&lt;/groupId&gt;
+  &lt;artifactId&gt;java-grok&lt;/artifactId&gt;
+  &lt;version&gt;0.1.9&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+<p>Or with gradle</p>
+<pre class="gradle"><code>compile &quot;io.krakens:java-grok:0.1.9&quot;</code></pre>
+<p>Old release (<a href="https://mvnrepository.com/artifact/io.thekraken/grok">Link</a>)</p>
+<h3 id="usage-grok-java-documentation">Usage (<a href="http://grok.nflabs.com/javadoc">Grok java documentation</a>)</h3>
+<p>Example of how to use java-grok:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode java"><code class="sourceCode java"><span id="cb3-1"><a href="#cb3-1"></a><span class="co">/* Create a new grokCompiler instance */</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>GrokCompiler grokCompiler = GrokCompiler.<span class="fu">newInstance</span>();</span>
+<span id="cb3-3"><a href="#cb3-3"></a>grokCompiler.<span class="fu">registerDefaultPatterns</span>();</span>
+<span id="cb3-4"><a href="#cb3-4"></a></span>
+<span id="cb3-5"><a href="#cb3-5"></a><span class="co">/* Grok pattern to compile, here httpd logs */</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="dt">final</span> Grok grok = grokCompiler.<span class="fu">compile</span>(<span class="st">&quot;%{COMBINEDAPACHELOG}&quot;</span>);</span>
+<span id="cb3-7"><a href="#cb3-7"></a></span>
+<span id="cb3-8"><a href="#cb3-8"></a><span class="co">/* Line of log to match */</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a><span class="bu">String</span> log = <span class="st">&quot;112.169.19.192 - - [06/Mar/2013:01:36:30 +0900] </span><span class="sc">\&quot;</span><span class="st">GET / HTTP/1.1</span><span class="sc">\&quot;</span><span class="st"> 200 44346 </span><span class="sc">\&quot;</span><span class="st">-</span><span class="sc">\&quot;</span><span class="st"> </span><span class="sc">\&quot;</span><span class="st">Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.152 Safari/537.22</span><span class="sc">\&quot;</span><span class="st">&quot;</span>;</span>
+<span id="cb3-10"><a href="#cb3-10"></a></span>
+<span id="cb3-11"><a href="#cb3-11"></a>Match gm = grok.<span class="fu">match</span>(log);</span>
+<span id="cb3-12"><a href="#cb3-12"></a></span>
+<span id="cb3-13"><a href="#cb3-13"></a><span class="co">/* Get the map with matches */</span></span>
+<span id="cb3-14"><a href="#cb3-14"></a><span class="dt">final</span> <span class="bu">Map</span>&lt;<span class="bu">String</span>, <span class="bu">Object</span>&gt; capture = gm.<span class="fu">capture</span>();</span></code></pre></div>
+<h3 id="build-java-grok">Build Java Grok</h3>
+<p>Java Grok support Gradle: <code>./gradlew assemble</code></p>
+<h3 id="getting-help">Getting help</h3>
+<p><a href="https://groups.google.com/forum/#!forum/java-grok">Mailling List</a></p>
+<h3 id="thanks-to">Thanks to</h3>
+<ul>
+<li><span class="citation" data-cites="joschi">[@joschi]</span>(https://github.com/joschi)</li>
+<li><span class="citation" data-cites="keitaf">[@keitaf]</span>(https://github.com/keitaf)</li>
+<li><span class="citation" data-cites="anthonycorbacho">[@anthonycorbacho]</span>(https://github.com/anthonycorbacho)</li>
+<li><span class="citation" data-cites="nokk">[@nokk]</span>(https://github.com/nokk)</li>
+<li><span class="citation" data-cites="wouterdb">[@wouterdb]</span>(https://github.com/wouterdb)</li>
+<li><span class="citation" data-cites="Leemoonsoo">[@Leemoonsoo]</span>(https://github.com/Leemoonsoo)</li>
+</ul>
+<p><strong>Any contributions are warmly welcome</strong></p>
+<p>Grok is inspired by the logstash inteceptor or filter available <a href="http://logstash.net/docs/1.4.1/filters/grok">here</a></p>

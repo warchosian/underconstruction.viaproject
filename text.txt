@@ -1,0 +1,18 @@
+* applicationName: pandoc
+* Recherche de application.pandoc.executable
+args[1]=text.md
+args[2]=--pdf-engine=xelatex
+args[3]=-o
+args[4]=text.pdf
+* Application:
+	G:\WarchoLife\WarchoPortable\CommonDevs\Pandoc\pandoc.exe
+* Commande:
+	 G:\WarchoLife\WarchoPortable\CommonDevs\Pandoc\pandoc.exe text.md --pdf-engine=xelatex -o text.pdf
+* ViaCommande:
+	via pandoc text.md --pdf-engine=xelatex -o text.pdf
+
+* =========> Resultat du traitement
+* output:   [Unknown reader: pdf
+Pandoc can convert to PDF, but not from PDF.]
+* exitcode: [1]
+* <========= Fin du traitement en succes avec errorlevel=[1]

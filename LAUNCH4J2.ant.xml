@@ -1,0 +1,70 @@
+<project name="svntool"  default="deploy"  basedir=".">
+    <!-- set global properties for this build -->
+    <property file="build.properties"/>
+    <property name="src" value="../src" />
+    <property name="bin" value="../bin" />
+    <property name="dist" value="../.." />
+    <property name="launch4j.dir" location="C:\Program Files\Launch4j" />
+
+    <taskdef name="launch4j"
+        classname="net.sf.launch4j.ant.Launch4jTask"
+        classpath="${launch4j.dir}/launch4j.jar
+            :${launch4j.dir}/lib/xstream.jar" />
+
+    <path id="project.classpath">
+        <fileset dir="C:\parsers\commons" casesensitive="no">
+             <include name="commons-lang-2.4.jar"/>
+        </fileset>
+        <fileset dir="C:\parsers\svnkit-1.7.4-v1\lib" casesensitive="no">
+            <include name="svnkit-cli-1.7.4-v1.jar"/>
+            <include name="svnkit-1.7.4-v1.jar"/>
+        </fileset>
+    </path>
+
+    <target name="init">
+        <!-- Create the dist directory structure used by compile and copy the deployment descriptors into it-->
+        <tstamp>
+            <format property="time_stamp" pattern="MM-dd-yyyy-hh-mm-aa"/>
+        </tstamp> 
+
+        <mkdir dir="${bin}"/>
+    </target>
+
+    <target name="clean">
+        <!-- Sometimes you can clean with deleting the module file but it is best dealt on an as needed basis -->
+        <delete dir="${bin}"/>
+    </target>
+
+    <target name="compile" depends="init">
+        <!-- Right Now, Fixing Target to 1.2 as Production is on 5.1 -->
+        <javac optimize="yes" debug="yes" srcdir="${src}" nowarn="on" destdir="${bin}">
+            <classpath refid="project.classpath" />
+        </javac>
+    </target>
+
+    <target name="deploy" depends="compile">
+        <!-- create the executable jars -->
+        <!-- Start of SVNTool -->
+        <delete file="${dist}/BackgroundProcesses.jar"/>
+        <delete dir="${dist}/empty"/>
+        <mkdir dir="${dist}/empty"/>
+        <jar destfile="${dist}/BackgroundProcesses.jar" basedir="${dist}/empty">
+            <zipgroupfileset dir="C:\parsers\log4j" includes="log4j-1.2.14.jar"/>
+            <zipgroupfileset dir="C:\parsers\svnkit-1.7.4-v1\lib" includes="svnkit-cli-1.7.4-v1.jar"/>
+            <zipgroupfileset dir="C:\parsers\svnkit-1.7.4-v1\lib" includes="svnkit-1.7.4-v1.jar"/>
+            <zipgroupfileset dir="C:\parsers\commons" includes="commons-lang-2.4.jar"/>
+            <fileset dir="${bin}" includes="*.class"/>          
+        </jar>
+        <sleep seconds="1"/>
+        <jar destfile="${dist}/svntool.jar" basedir="${dist}/empty">
+            <manifest>
+                <attribute name="Main-Class" value="SVNTool"/>
+            </manifest>
+            <zipfileset excludes="**/META-INF/**" src="${dist}/BackgroundProcesses.jar"/>
+        </jar>
+
+        <launch4j configFile="launch4j.xml" />
+        <delete file="${dist}/BackgroundProcesses.jar"/>
+        <delete dir="${dist}/empty"/>
+    </target>
+</project>

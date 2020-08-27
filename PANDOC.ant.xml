@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="PANDOC.ant.xml" default="pandoc">
+
+
+
+	<target name="pandoc" description="OK">
+
+		<exec executable="cmd" failonerror="true">
+			<arg value="/c" />
+			<arg value="G:\WarchoLife\WarchoPortable\CommonDevs\Pandoc\pandoc.exe" />
+			<arg value="text.md" />
+			<arg value="-o" />
+			<arg value="text4.html" />
+
+		</exec>
+		<echo>== Fin de traitement</echo>
+	</target>
+
+	<target name="pandoc2html" description="OK">
+
+		<exec executable="G:\WarchoLife\WarchoPortable\CommonDevs\Pandoc\pandoc.exe" newenvironment="true" spawn="false" failonerror="true">
+			<arg value="text.md" />
+			<arg value="-o" />
+			<arg value="text55.html" />
+
+		</exec>
+		<echo>== Fin de traitement</echo>
+	</target>
+
+	<!-- 	pandoc test1.md -f markdown -t html -s -o test1.html -->
+	<target name="html2md" description="KO">
+		<exec executable="G:\WarchoLife\WarchoPortable\CommonDevs\Pandoc\pandoc.exe" newenvironment="true" spawn="false" failonerror="true">
+			<arg value="html.html" />
+			<arg value="-f" />
+			<arg value="html" />
+			<arg value="-t" />
+			<arg value="markdown" />
+			<arg value="-o" />
+			<arg value="html.md" />
+
+		</exec>
+		<echo>== Fin de traitement</echo>
+	</target>
+
+
+
+
+	<target name="pandoc2pdf_KO" description="KO">
+
+		<exec executable="G:\WarchoLife\WarchoPortable\CommonDevs\Pandoc\pandoc.exe" newenvironment="true" spawn="false" failonerror="true">
+			<arg value="text.md" />
+			<arg value="--pdf-engine=xelatex" />
+			<arg value="-o" />
+			<arg value="text55.pdf" />
+
+		</exec>
+		<echo>== Fin de traitement</echo>
+	</target>
+
+
+
+
+</project>

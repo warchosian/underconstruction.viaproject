@@ -1,0 +1,8 @@
+curl -XPOST "https://19.168.99.100:9200/_search" -d'
+  {
+     "query": {
+        "query_string": {
+            "query": "hello"
+          }
+       }
+  }'

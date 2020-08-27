@@ -1,0 +1,253 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Pandoc - Getting started with pandoc</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!--[if lt IE 9]>
+       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+       <![endif]-->
+  <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/screen.css">
+  <link rel="stylesheet" type="text/css" media="print" href="css/print.css">
+  <style>
+      code{white-space: pre-wrap;}
+      pre{ font-size: 12pt; }
+      .smallcaps{font-variant: small-caps;}
+      .line-block{white-space: pre-line;}
+      .column{display: inline-block;}
+  </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  <script>
+  /* <![CDATA[ */
+    (function() {
+        var s = document.createElement('script'), t = document.getElementsByTagName('script')[0];
+        s.type = 'text/javascript';
+        s.async = true;
+        s.src = 'https://api.flattr.com/js/0.6/load.js?mode=auto';
+        t.parentNode.insertBefore(s, t);
+    })();
+  /* ]]> */
+  </script>
+</head>
+<body>
+  <div id="doc" class="container-fluid">
+    <header>
+        <div id="github-sponsors">
+          <a href="https://github.com/users/jgm/sponsorship">Sponsor</a>
+        </div>
+        <div id="paypal">
+         <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
+">
+<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" name="submit" alt="PayPal - The safer, easier way to pay online!">
+<img alt="" style="border:0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+</form>
+      </div>
+
+        <span class="big">Pandoc</span>
+        &nbsp;
+        <span class="small">a universal document converter</span>
+    </header>
+    <div id="bd">
+      <nav id="navbar" class="navbar navbar-default col-md-3 col-sm-4">
+        <div class="navbar-header">
+  <button type="button" class="navbar-toggle"
+          data-toggle="collapse"
+          data-target=".navbar-collapse">
+    <span class="sr-only">Toggle navigation</span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+  </button>
+</div>
+<div class="navbar-collapse collapse">
+<ul class="nav sidebar-nav">
+    <li><a href="index.html">About</a></li>
+    <li><a href="installing.html">Installing</a></li>
+    <li><a href="getting-started.html">Getting started</a></li>
+    <li><a id="demobtn" data-toggle="collapse" data-target="#demotree" aria-expanded="false" class="tree-toggle nav-header" href="#">Demos</a>
+    <ul id="demotree" class="nav tree collapse" role="menu" aria-labelledby="demobtn">
+      <li><a href="try">Try pandoc online</a></li>
+      <li><a href="demos.html">Examples</a></li>
+    </ul>
+    </li>
+    <li><a id="docbtn" data-toggle="collapse" data-target="#doctree" aria-expanded="false" class="tree-toggle nav-header" href="#">Documentation</a>
+    <ul id="doctree" class="nav tree collapse" role="menu" aria-labelledby="docbtn">
+      <li><a href="MANUAL.html">User's Guide</a>
+      <li><a href="MANUAL.pdf">User's Guide (PDF)</a>
+      <li><a href="epub.html">Making an ebook</a></li>
+      <li><a href="filters.html">Filters</a></li>
+      <li><a href="lua-filters.html">Lua filters</a></li>
+      <li><a href="CONTRIBUTING.html">Contributing</a></li>
+      <li><a href="faqs.html">FAQ</a></li>
+      <li><a href="press.html">Press</a></li>
+      <li><a href="org.html">Emacs Org mode support details</a></li>
+      <li><a href="using-the-pandoc-api.html">Using the Pandoc API</a></li>
+      <li><a href="http://hackage.haskell.org/package/pandoc">API documentation</a></li>
+    </ul>
+    </li>
+    <li><a href="help.html">Help</a></li>
+    <li><a href="extras.html">Extras</a></li>
+    <li><a href="releases.html">Releases</a></li>
+  </ul>
+</div>
+      </nav>
+      <main class="col-md-9 col-sm-8">
+        <div class="row">
+          <h1 class="title">Getting started with pandoc</h1>
+        <div id="toc">
+<ul>
+<li><a href="#step-1-install-pandoc">Step 1: Install pandoc</a></li>
+<li><a href="#step-2-open-a-terminal">Step 2: Open a terminal</a></li>
+<li><a href="#step-3-changing-directories">Step 3: Changing directories</a></li>
+<li><a href="#step-4-using-pandoc-as-a-filter">Step 4: Using pandoc as a filter</a></li>
+<li><a href="#step-5-text-editor-basics">Step 5: Text editor basics</a></li>
+<li><a href="#step-6-converting-a-file">Step 6: Converting a file</a></li>
+<li><a href="#step-7-command-line-options">Step 7: Command-line options</a></li>
+</ul>
+        </div>
+<p>This document is for people who are unfamiliar with command line tools. Command-line experts can go straight to the <a href="https://pandoc.org/MANUAL.html">User’s Guide</a> or the pandoc man page.</p>
+<h1 id="step-1-install-pandoc">Step 1: Install pandoc</h1>
+<p>First, install pandoc, following the <a href="https://pandoc.org/installing.html">instructions for your platform</a>.</p>
+<h1 id="step-2-open-a-terminal">Step 2: Open a terminal</h1>
+<p>Pandoc is a command-line tool. There is no graphic user interface. So, to use it, you’ll need to open a terminal window:</p>
+<ul>
+<li><p>On OS X, the Terminal application can be found in <span class="nowrap"><code>/Applications/Utilities</code></span>. Open a Finder window and go to <span class="nowrap"><code>Applications</code></span>, then <span class="nowrap"><code>Utilities</code></span>. Then double click on <span class="nowrap"><code>Terminal</code></span>. (Or, click the spotlight icon in the upper right hand corner of your screen and type <span class="nowrap"><code>Terminal</code></span> – you should see <span class="nowrap"><code>Terminal</code></span> under <span class="nowrap"><code>Applications</code></span>.)</p></li>
+<li><p>On Windows, you can use either the classic command prompt or the more modern PowerShell terminal. If you use Windows in desktop mode, run the <span class="nowrap"><code>cmd</code></span> or <span class="nowrap"><code>powershell</code></span> command from the Start menu. If you use the Windows 8 start screen instead, simply type <span class="nowrap"><code>cmd</code></span> or <span class="nowrap"><code>powershell</code></span>, and then run either the “Command Prompt” or “Windows Powershell” application. If you are using <span class="nowrap"><code>cmd</code></span>, type <span class="nowrap"><code>chcp 65001</code></span> before using pandoc, to set the encoding to UTF-8.</p></li>
+<li><p>On Linux, there are many possible configurations, depending on what desktop environment you’re using:</p>
+<ul>
+<li>In Unity, use the search function on the <span class="nowrap"><code>Dash</code></span>, and search for <span class="nowrap"><code>Terminal</code></span>. Or, use the keyboard shortcut <span class="nowrap"><code>Ctrl-Alt-T</code></span>.</li>
+<li>In Gnome, go to <span class="nowrap"><code>Applications</code></span>, then <span class="nowrap"><code>Accessories</code></span>, and select <span class="nowrap"><code>Terminal</code></span>, or use <span class="nowrap"><code>Ctrl-Alt-T</code></span>.</li>
+<li>In XFCE, go to <span class="nowrap"><code>Applications</code></span>, then <span class="nowrap"><code>System</code></span>, then <span class="nowrap"><code>Terminal</code></span>, or use <span class="nowrap"><code>Super-T</code></span>.</li>
+<li>In KDE, go to <span class="nowrap"><code>KMenu</code></span>, then <span class="nowrap"><code>System</code></span>, then <span class="nowrap"><code>Terminal Program (Konsole)</code></span>.</li>
+</ul></li>
+</ul>
+<p>You should now see a rectangle with a “prompt” (possibly just a symbol like <span class="nowrap"><code>%</code></span>, but probably including more information, such as your username and directory), and a blinking cursor.</p>
+<p>Let’s verify that pandoc is installed. Type</p>
+<pre><code>pandoc --version</code></pre>
+<p>and hit enter. You should see a message telling you which version of pandoc is installed, and giving you some additional information.</p>
+<h1 id="step-3-changing-directories">Step 3: Changing directories</h1>
+<p>First, let’s see where we are. Type</p>
+<pre><code>pwd</code></pre>
+<p>on Linux or OSX, or</p>
+<pre><code>echo %cd%</code></pre>
+<p>on Windows, and hit enter. Your terminal should print your current working directory. (Guess what <span class="nowrap"><code>pwd</code></span> stands for?) This should be your home directory.</p>
+<p>Let’s navigate now to our <span class="nowrap"><code>Documents</code></span> directory: type</p>
+<pre><code>cd Documents</code></pre>
+<p>and hit enter. Now type</p>
+<pre><code>pwd</code></pre>
+<p>(or <span class="nowrap"><code>echo %cd%</code></span> on Windows) again. You should be in the <span class="nowrap"><code>Documents</code></span> subdirectory of your home directory. To go back to your home directory, you could type</p>
+<pre><code>cd ..</code></pre>
+<p>The <span class="nowrap"><code>..</code></span> means “one level up.”</p>
+<p>Go back to your <span class="nowrap"><code>Documents</code></span> directory if you’re not there already. Let’s try creating a subdirectory called <span class="nowrap"><code>pandoc-test</code></span>:</p>
+<pre><code>mkdir pandoc-test</code></pre>
+<p>Now change to the <span class="nowrap"><code>pandoc-test</code></span> directory:</p>
+<pre><code>cd pandoc-test</code></pre>
+<p>If the prompt doesn’t tell you what directory you’re in, you can confirm that you’re there by doing</p>
+<pre><code>pwd</code></pre>
+<p>(or <span class="nowrap"><code>echo %cd%</code></span>) again.</p>
+<p>OK, that’s all you need to know for now about using the terminal. But here’s a secret that will save you a lot of typing. You can always type the up-arrow key to go back through your history of commands. So if you want to use a command you typed earlier, you don’t need to type it again: just use up-arrow until it comes up. Try this. (You can use down-arrow as well, to go the other direction.) Once you have the command, you can also use the left and right arrows and the backspace/delete key to edit it.</p>
+<p>Most terminals also support tab completion of directories and filenames. To try this, let’s first go back up to our <span class="nowrap"><code>Documents</code></span> directory:</p>
+<pre><code>cd ..</code></pre>
+<p>Now, type</p>
+<pre><code>cd pandoc-</code></pre>
+<p>and hit the tab key instead of enter. Your terminal should fill in the rest (<span class="nowrap"><code>test</code></span>), and then you can hit enter.</p>
+<p>To review:</p>
+<ul>
+<li><span class="nowrap"><code>pwd</code></span> (or <span class="nowrap"><code>echo %cd%</code></span> on Windows) to see what the current working directory is.</li>
+<li><span class="nowrap"><code>cd foo</code></span> to change to the <span class="nowrap"><code>foo</code></span> subdirectory of your working directory.</li>
+<li><span class="nowrap"><code>cd ..</code></span> to move up to the parent of the working directory.</li>
+<li><span class="nowrap"><code>mkdir foo</code></span> to create a subdirectory called <span class="nowrap"><code>foo</code></span> in the working directory.</li>
+<li>up-arrow to go back through your command history.</li>
+<li>tab to complete directories and file names.</li>
+</ul>
+<h1 id="step-4-using-pandoc-as-a-filter">Step 4: Using pandoc as a filter</h1>
+<p>Type</p>
+<pre><code>pandoc</code></pre>
+<p>and hit enter. You should see the cursor just sitting there, waiting for you to type something. Type this:</p>
+<pre><code>Hello *pandoc*!
+
+- one
+- two</code></pre>
+<p>When you’re finished (the cursor should be at the beginning of the line), type <span class="nowrap"><code>Ctrl-D</code></span> on OS X or Linux, or <span class="nowrap"><code>Ctrl-Z</code></span> followed by <span class="nowrap"><code>Enter</code></span> on Windows. You should now see your text converted to HTML!</p>
+<pre><code>&lt;p&gt;Hello &lt;em&gt;pandoc&lt;/em&gt;!&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;one&lt;/li&gt;
+&lt;li&gt;two&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+<p>What just happened? When pandoc is invoked without specifying any input files, it operates as a “filter,” taking input from the terminal and sending its output back to the terminal. You can use this feature to play around with pandoc.</p>
+<p>By default, input is interpreted as pandoc markdown, and output is HTML. But we can change that. Let’s try converting <em>from</em> HTML <em>to</em> markdown:</p>
+<pre><code>pandoc -f html -t markdown</code></pre>
+<p>Now type:</p>
+<pre><code>&lt;p&gt;Hello &lt;em&gt;pandoc&lt;/em&gt;!&lt;/p&gt;</code></pre>
+<p>and hit <span class="nowrap"><code>Ctrl-D</code></span> (or <span class="nowrap"><code>Ctrl-Z</code></span> followed by <span class="nowrap"><code>Enter</code></span> on Windows). You should see:</p>
+<pre><code>Hello *pandoc*!</code></pre>
+<p>Now try converting something from markdown to LaTeX. What command do you think you should use?</p>
+<h1 id="step-5-text-editor-basics">Step 5: Text editor basics</h1>
+<p>You’ll probably want to use pandoc to convert a file, not to read text from the terminal. That’s easy, but first we need to create a text file in our <span class="nowrap"><code>pandoc-test</code></span> subdirectory.</p>
+<p><strong>Important:</strong> To create a text file, you’ll need to use a text editor, <em>not</em> a word processor like Microsoft Word. On Windows, you can use Notepad (in <span class="nowrap"><code>Accessories</code></span>). On OS X, you can use <span class="nowrap"><code>TextEdit</code></span> (in <span class="nowrap"><code>Applications</code></span>). On Linux, different platforms come with different text editors: Gnome has <span class="nowrap"><code>GEdit</code></span>, and KDE has <span class="nowrap"><code>Kate</code></span>.</p>
+<p>Start up your text editor. Type the following:</p>
+<pre><code>---
+title: Test
+...
+
+# Test!
+
+This is a test of *pandoc*.
+
+- list one
+- list two</code></pre>
+<p>Now save your file as <span class="nowrap"><code>test1.md</code></span> in the directory <span class="nowrap"><code>Documents/pandoc-test</code></span>.</p>
+<p>Note: If you use plain text a lot, you’ll want a better editor than <span class="nowrap"><code>Notepad</code></span> or <span class="nowrap"><code>TextEdit</code></span>. You might want to look at <a href="https://www.sublimetext.com/">Sublime Text</a> or (if you’re willing to put in some time learning an unfamiliar interface) <a href="https://www.vim.org">Vim</a> or <a href="https://www.gnu.org/software/emacs">Emacs</a>.</p>
+<h1 id="step-6-converting-a-file">Step 6: Converting a file</h1>
+<p>Go back to your terminal. We should still be in the <span class="nowrap"><code>Documents/pandoc-test</code></span> directory. Verify that with <span class="nowrap"><code>pwd</code></span>.</p>
+<p>Now type</p>
+<pre><code>ls</code></pre>
+<p>(or <span class="nowrap"><code>dir</code></span> if you’re on Windows). This will list the files in the current directory. You should see the file you created, <span class="nowrap"><code>test1.md</code></span>.</p>
+<p>To convert it to HTML, use this command:</p>
+<pre><code>pandoc test1.md -f markdown -t html -s -o test1.html</code></pre>
+<p>The filename <span class="nowrap"><code>test1.md</code></span> tells pandoc which file to convert. The <span class="nowrap"><code>-s</code></span> option says to create a “standalone” file, with a header and footer, not just a fragment. And the <span class="nowrap"><code>-o test1.html</code></span> says to put the output in the file <span class="nowrap"><code>test1.html</code></span>. Note that we could have omitted <span class="nowrap"><code>-f markdown</code></span> and <span class="nowrap"><code>-t html</code></span>, since the default is to convert from markdown to HTML, but it doesn’t hurt to include them.</p>
+<p>Check that the file was created by typing <span class="nowrap"><code>ls</code></span> again. You should see <span class="nowrap"><code>test1.html</code></span>. Now open this in a browser. On OS X, you can type</p>
+<pre><code>open test1.html</code></pre>
+<p>On Windows, type</p>
+<pre><code>.\test1.html</code></pre>
+<p>You should see a browser window with your document.</p>
+<p>To create a LaTeX document, you just need to change the command slightly:</p>
+<pre><code>pandoc test1.md -f markdown -t latex -s -o test1.tex</code></pre>
+<p>Try opening <span class="nowrap"><code>test1.tex</code></span> in your text editor.</p>
+<p>Pandoc can often figure out the input and output formats from the filename extensions. So, you could have just used:</p>
+<pre><code>pandoc test1.md -s -o test1.tex</code></pre>
+<p>Pandoc knows you’re trying to create a LaTeX document, because of the <span class="nowrap"><code>.tex</code></span> extension.</p>
+<p>Now try creating a Word document (with extension <span class="nowrap"><code>docx</code></span>).</p>
+<p>If you want to create a PDF, you’ll need to have LaTeX installed. (See <a href="https://tug.org/mactex/">MacTeX</a> on OS X, <a href="https://miktex.org">MiKTeX</a> on Windows, or install the texlive package on Linux.) Then do</p>
+<pre><code>pandoc test1.md -s -o test1.pdf</code></pre>
+<h1 id="step-7-command-line-options">Step 7: Command-line options</h1>
+<p>You now know the basics. Pandoc has a lot of options. At this point you can start to learn more about them by reading the <a href="https://pandoc.org/MANUAL.html">User’s Guide</a>.</p>
+<p>Here’s an example. The <span class="nowrap"><code>--mathml</code></span> option causes pandoc to convert TeX math into MathML. Type</p>
+<pre><code>pandoc --mathml</code></pre>
+<p>then enter this text, followed by <span class="nowrap"><code>Ctrl-D</code></span> (<span class="nowrap"><code>Ctrl-Z</code></span> followed by <span class="nowrap"><code>Enter</code></span> on Windows):</p>
+<pre><code>$x = y^2$</code></pre>
+<p>Now try the same thing without <span class="nowrap"><code>--mathml</code></span>. See the difference in output?</p>
+<p>If you forget an option, or forget which formats are supported, you can always do</p>
+<pre><code>pandoc --help</code></pre>
+<p>to get a list of all the supported options.</p>
+<p>On OS X or Linux systems, you can also do</p>
+<pre><code>man pandoc</code></pre>
+<p>to get the pandoc manual page. All of this information is also in the User’s Guide.</p>
+<p>If you get stuck, you can always ask questions on the <a href="https://groups.google.com/group/pandoc-discuss">pandoc-discuss</a> mailing list. But be sure to check the <a href="https://pandoc.org/faqs.html">FAQs</a> first, and search through the mailing list to see if your question has been answered before.</p>
+        </div>
+      </main>
+    </div>
+    <footer>
+    </footer>
+  </div>
+  <script src="js/collapseTOC.js"></script>
+</body>
+</html>

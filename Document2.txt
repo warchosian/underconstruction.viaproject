@@ -1,0 +1,13 @@
+curl -X PUT 'http://localhost:9200/donnees' -d '
+  { "mappings": {
+      "utilsateurs": {
+         "properties": {
+            "nom" : {"type": "string"},
+            "nom" : {"type": "string"},
+            "ville" : {"type": "string"}
+         }
+      }
+    }
+  }'  
+     
+       

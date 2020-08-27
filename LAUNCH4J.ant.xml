@@ -1,0 +1,43 @@
+<!--
+ Copyright (c) 2016 Hervé MARCHAL
+-->
+
+<!-- ===================== Project Properties =========================== -->
+
+<project name="LAUNCH4J.xml" default="hello">
+
+	<taskdef resource="net/jtools/classloadertask/antlib.xml">
+		<classpath>
+			<fileset dir="lib-ant/classloader" includes="ant-classloader*.jar" />
+		</classpath>
+	</taskdef>
+
+	<classloader loader="system" classpath="lib-jar/launch4j/launch4j-3.8.0.jar" />
+	<classloader loader="system" classpath="lib-jar/launch4j/xstream-1.4.9.jar" />
+	
+		
+	<!-- http://launch4j.sourceforge.net/docs.html -->
+	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" 
+		classpath="lib-jar/launch4j/aunch4j-3.8.0.jar:lib-jar/launch4j/xstream-1.4.9.jar" />
+
+	<target name="launch4j">
+		<launch4j classpath="lib-jar/launch4j/aunch4j-3.8.0.jar:lib-jar/launch4j/xstream-1.4.9.jar">
+			<config headerType="gui" outfile="demo.exe" dontWrapJar="true" jarPath="demo.jar">
+				<var>SETTINGS="%HomeDrive%%HomePath%\\settings.ini"</var>
+				<classPath mainClass="org.demo.DemoApp">
+					<cp>./lib/looks.jar</cp>
+					<cp>%USER_LIBS%/*.jar</cp>
+				</classPath>
+				<jre minVersion="1.4.0">
+					<opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
+					<opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
+				</jre>
+			</config>
+		</launch4j>
+	</target>
+
+	<target name="hello">
+		<echo>BONJOUR</echo>
+	</target>
+
+</project>

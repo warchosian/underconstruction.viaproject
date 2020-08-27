@@ -1,0 +1,1 @@
+reg add "HKCU\Software\Microsoft\Command Processor" /v Autorun /d "doskey /macrofile=\"G:\WarchoLife\WarchoPortable\CommonDevs\Eclipse\eclipse-jee-2020-06-R-win32-x86_64-workspace\underconstruction.viaproject\build\libs\macros.doskey\"" /f
